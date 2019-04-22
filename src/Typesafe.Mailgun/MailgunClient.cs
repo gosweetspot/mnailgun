@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Mail;
-using Typesafe.Mailgun.Mailboxes;
 using Typesafe.Mailgun.Routing;
 using Typesafe.Mailgun.Statistics;
 
@@ -30,11 +29,6 @@ namespace Typesafe.Mailgun
 			return new SendMailCommand(this, mailMessage).Invoke();
 		}
 
-        public SendMailCommandResult SendMail(MailMessage mailMessage, IDictionary<string, object> customVariables)
-        {
-            return new SendMailCommand(this, mailMessage, null, customVariables).Invoke();
-        }
-
 		public SendMailCommandResult SendBatchMail(MailMessage mailMessage)
 		{
 			return SendBatchMail(mailMessage, new Dictionary<string, IDictionary<string, object>>());
@@ -60,26 +54,9 @@ namespace Typesafe.Mailgun
 			return new DeleteCommand(this, "../routes/" + routeId).Invoke();
 		}
 
-
 		public IEnumerable<MailgunStatEntry> GetStats(int skip, int take, MailgunEventTypes eventTypes, out int count)
 		{
 			return new MailgunStatsQuery(this, eventTypes).Execute(skip, take, out count);
-		}
-
-
-		public CommandResult CreateMailbox(string name, string password)
-		{
-			return new CreateMailboxCommand(this, name, password).Invoke();
-		}
-
-		public CommandResult DeleteMailbox(string name)
-		{
-			return new DeleteCommand(this, "mailboxes/" + name).Invoke();
-		}
-
-		public IEnumerable<Mailbox> GetMailboxes(int skip, int take, out int count)
-		{
-			return new MailgunMailboxQuery(this).Execute(skip, take, out count);
 		}
 	}
 }
