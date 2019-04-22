@@ -1,17 +1,19 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2048
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typesafe.Mailgun.Tests", "Typesafe.Mailgun.Tests\Typesafe.Mailgun.Tests.csproj", "{7FA60929-7721-47DC-B9DC-39643E3B9D36}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typesafe.Mailgun", "Typesafe.Mailgun\Typesafe.Mailgun.csproj", "{38A5D96D-36BC-4F37-9477-CD18FB32563B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1680AF82-A416-4F6B-9166-7710C60F6E4F}"
-	ProjectSection(SolutionItems) = preProject
-		..\nuget\mnailgun.nuspec = ..\nuget\mnailgun.nuspec
-		nuget.config = nuget.config
-		..\rakefile.rb = ..\rakefile.rb
-		..\VERSION.txt = ..\VERSION.txt
-	EndProjectSection
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionFolder", "{45B8D2B2-CC7D-4F3B-89CC-70A24773D4A6}"
+ProjectSection(SolutionItems) = preProject
+	..\license.txt = ..\license.txt
+	..\README.md = ..\README.md
+	..\RELEASE-NOTES.md = ..\RELEASE-NOTES.md
+	..\pack.sh = ..\pack.sh
+EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +32,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DCE20E45-6C98-41D9-83FC-113205C22E1B}
 	EndGlobalSection
 EndGlobal

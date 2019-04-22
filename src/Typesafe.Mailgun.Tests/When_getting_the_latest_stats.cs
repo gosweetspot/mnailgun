@@ -1,17 +1,17 @@
-using NUnit.Framework;
+using Xunit;
 
 namespace Typesafe.Mailgun.Tests
 {
-	[TestFixture]
+	[Trait("Category", TestCategory.Integration)]
 	public class When_getting_the_latest_stats
 	{
-		[Test]
+		[Fact]
 		public void a_list_of_events_should_be_returned()
 		{
 			int count;
 			var e = MailgunClientBuilder.GetClient().GetStats(0, 100, MailgunEventTypes.Sent, out count);
 
-			Assert.IsTrue(count > 0);
+			Assert.True(count > 0);
 		}
 	}
 }

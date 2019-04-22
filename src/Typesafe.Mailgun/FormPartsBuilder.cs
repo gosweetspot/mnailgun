@@ -8,6 +8,8 @@ using Typesafe.Mailgun.Http;
 
 namespace Typesafe.Mailgun
 {
+	using Newtonsoft.Json.Linq;
+
 	public static class FormPartsBuilder
 	{
 		public static List<FormPart> Build(MailMessage message)
@@ -18,12 +20,14 @@ namespace Typesafe.Mailgun
         public static List<FormPart> Build(MailMessage message, IDictionary<string, IDictionary<string, object>> recipientVariables, IDictionary<string, object> customVariables = null)
 		{
 			if (message == null)
+			{
 				return new List<FormPart>();
+			}
 
 			var result = new List<FormPart>
 			{
 				new SimpleFormPart("from", message.From.ToString()),
-				new SimpleFormPart("to",string.Join(", ", message.To)),
+				new SimpleFormPart("to", string.Join(", ", message.To)),
 				new SimpleFormPart("subject", message.Subject),
 			};
 
@@ -45,10 +49,44 @@ namespace Typesafe.Mailgun
 			if (message.Bcc.Any())
 				result.Add(new SimpleFormPart("bcc", string.Join(", ", message.Bcc)));
 
-			if(message.ReplyToList.Any())
+			if (message.ReplyToList.Any())
 				result.Add(new SimpleFormPart("h:Reply-To", string.Join(", ", message.ReplyToList)));
 
+			// Check for the existence of any Mailgun-Variables headers
+			if (message.Headers.AllKeys.Contains("X-Mailgun-Variables"))
+			{
+				// Grab the Mailgun variables header values
+				var variableHeaders = message.Headers.GetValues("X-Mailgun-Variables");
+				if (variableHeaders != null)
+				{
+					// Iterate over the collection and add each tag header to the result
+					foreach (var variable in variableHeaders)
+					{
+						JObject customVar = JObject.Parse(variable);
+						foreach (var item in customVar)
+						{
+							result.Add(new SimpleFormPart(string.Format("v:{0}", item.Key), item.Value.ToString()));
+						}
+					}
+				}
+			}
+
 			result.AddRange(message.GetBodyParts());
+
+			// Check for the existense of any Mailgun Tag headers
+			if (message.Headers.AllKeys.Contains("X-Mailgun-Tag"))
+			{
+				// Grab the Mailgun tag header values
+				var tagHeaders = message.Headers.GetValues("X-Mailgun-Tag");
+				if (tagHeaders != null)
+				{
+					// Iterate over the collection and add each tag header to the result
+					foreach (var tag in tagHeaders)
+					{
+						result.Add(new SimpleFormPart("o:tag", tag));
+					}
+				}
+			}
 
 			result.AddRange(message.Attachments.Select(attachment => new AttachmentFormPart(attachment)));
 
